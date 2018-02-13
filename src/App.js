@@ -48,7 +48,7 @@ const Note = (props) => {
     <div className="card noteCard">
       <div className="createdAt">Noted on: {formatDate(props.note.createdAt)}</div>
       <div>
-        <div style={{display:'inline-block', width: '70%'}} className="noteText">{props.note.noteText}</div>
+        <div style={{display:'inline-block', width: '70%'}}>{props.note.noteText}</div>
         <VotingBox noteId={props.note.id} voteCount={props.note.voteCount} handleVote={props.handleVote}/>
       </div>
     </div>
