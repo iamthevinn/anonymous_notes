@@ -1,28 +1,44 @@
 .App {
-  text-align: center;
+  padding: 50px;
+  height: 100vh;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.outerCard {
+  height: 100%;
+  width: 100%;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.header {
+  padding-bottom: 20px;
 }
 
-.App-title {
-  font-size: 1.5em;
+.inputContent {
+  display: inline-block;
 }
 
-.App-intro {
-  font-size: large;
+.inputTextBox {
+  width: 75%;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.inputButtonContainer {
+  padding-left: 20px;
+  width: 20%;
+}
+
+.inputButton {
+  width: 100%
+}
+
+.inputLabel {
+  width: 5%;
+}
+
+.scrollBox {
+  margin-top: 30px;
+  overflow:auto;
+  max-height: 380px;
+}
+
+.noteCard {
+  margin-bottom: 5px;
 }
