@@ -47,12 +47,26 @@ class App extends Component {
     }
     this.handleInputTextChange = this.handleInputTextChange.bind(this);
     this.addButtonClicked = this.addButtonClicked.bind(this)
+    this.loadNotes = this.loadNotes.bind(this)
+    this.addNote = this.addNote.bind(this)
   }
 
   componentDidMount() {
+    this.loadNotes()
+  }
+
+  loadNotes() {
     const promise = axios.get('http://5a831a6898bd81001246c8e5.mockapi.io/notes');
     promise.then(({ data: notes }) => {
       this.setState({notes: notes})
+    }, () => { })
+  }
+
+  addNote(noteObj) {
+    const promise = axios.post('http://5a831a6898bd81001246c8e5.mockapi.io/notes', noteObj);
+    promise.then(({ data: note }) => {
+      this.setState({inputText: ""})
+      this.loadNotes()
     }, () => { })
   }
 
@@ -61,7 +75,7 @@ class App extends Component {
   }
 
   addButtonClicked() {
-    this.setState({inputText: ""})
+    this.addNote({noteText: this.state.inputText})
   }
 
   render() {
