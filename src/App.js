@@ -23,7 +23,7 @@ const Note = (props) => {
 
   function formatDate(timeSinceEpoch) {
     const date = new Date(timeSinceEpoch * 1000)
-    return date.toLocaleString();
+    return date.toDateString().substr(date.toDateString().indexOf(" ") + 1) + ", " + date.toLocaleTimeString();
   }
 
   return (
