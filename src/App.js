@@ -24,8 +24,8 @@ const InputNote = (props) => {
 const Note = (props) => {
   return (
     <div className="card noteCard">
-      <div className="createdAt">{props.note.createdAt}</div>
-      <div>{props.note.noteText}</div>
+      <div className="createdAt">Noted on: {props.note.createdAt}</div>
+      <div className="noteText">{props.note.noteText}</div>
     </div>
   )
 }
