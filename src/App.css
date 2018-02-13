@@ -1,6 +1,7 @@
 .App {
   padding: 50px;
-  height: 100vh;
+  height: 100%;
+  padding-bottom: 0px;
 }
 
 .outerCard {
