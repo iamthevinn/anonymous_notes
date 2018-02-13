@@ -119,7 +119,10 @@ class App extends Component {
 
   sortedNotes() {
     let sortedNotes = this.state.notes.slice();
-    return sortedNotes.sort(function (a, b) { return b.createdAt - a.createdAt })
+    if (this.state.sortedBy === 'date')
+      return sortedNotes.sort(function (a, b) { return b.createdAt - a.createdAt })
+    else
+    return sortedNotes.sort(function (a, b) { return b.voteCount - a.voteCount }) 
   }
 
   updateSortedBy(dateOrVote) {
@@ -134,8 +137,6 @@ class App extends Component {
       this.loadNotes()
     }, () => { })
   }
-
-
 
   render() {
     return (
