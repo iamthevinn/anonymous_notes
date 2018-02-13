@@ -87,9 +87,15 @@ const HomeView = (props) => {
 }
 
 const NoteView = (props) => {
+  const note = props.notes.find((note) => props.match.match.params.id === note.id)
   return (
     <div className="noteView">
-      <h1>NoteView</h1>
+      <div className="goHome">
+        <Link  to="/">Go Home</Link>
+      </div>
+       
+      <h1>Note ID #{props.match.match.params.id}</h1>
+      {note && <Note key={note.id} match={props.match} handleNoteClick={props.handleNoteClick} handleVote={props.handleVote} note={note} />}
     </div>
   )
 }
@@ -168,7 +174,7 @@ class App extends Component {
       <Router>
         <div className="App">
           <Route exact path="/" render={(match) => <HomeView match={match} inputText={this.state.inputText} notes={this.state.notes} sortedBy={this.state.sortedBy} handleInputTextChange={this.handleInputTextChange} addButtonClicked={this.addButtonClicked} updateSortedBy={this.updateSortedBy} handleNoteClick={this.handleNoteClick} handleVote={this.handleVote} sortedNotes={this.sortedNotes()}/>} />
-          <Route path="/:id" render={() => <NoteView />} />
+          <Route path="/:id" render={(match) => <NoteView match={match} notes={this.state.notes} handleVote={this.handleVote} handleNoteClick={this.handleNoteClick} />} />
         </div>
       </Router>
     );
