@@ -25,6 +25,18 @@ const InputNote = (props) => {
   )
 }
 
+const VotingBox = (props) => {
+  return (
+    <div className="votingBox">
+      <div style={{display:'inline-block'}}>
+        <div className="voteText">Votes:</div>
+        <div className="voteText">+3</div>
+      </div>
+      <button className="voteButton">Upvote!</button>
+    </div>
+  )
+}
+
 const Note = (props) => {
 
   function formatDate(timeSinceEpoch) {
@@ -35,7 +47,10 @@ const Note = (props) => {
   return (
     <div className="card noteCard">
       <div className="createdAt">Noted on: {formatDate(props.note.createdAt)}</div>
-      <div className="noteText">{props.note.noteText}</div>
+      <div>
+        <div style={{display:'inline-block', width: '70%'}} className="noteText">{props.note.noteText}</div>
+        <VotingBox />
+      </div>
     </div>
   )
 }

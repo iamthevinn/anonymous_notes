@@ -64,3 +64,22 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+.voteButton {
+  display: inline-block;
+  width: 50%;
+  background:purple;
+  border-color: purple;
+}
+
+.voteText {
+  font-size: 24px;
+  padding-right: 10px;
+}
+
+.votingBox {
+  display: inline-block;
+  vertical-align: top;
+  width: 30%;
+  text-align: right
+}
