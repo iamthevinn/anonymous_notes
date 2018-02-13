@@ -28,7 +28,7 @@ const InputNote = (props) => {
 const VotingBox = (props) => {
   return (
     <div className="votingBox">
-      <div style={{display:'inline-block'}}>
+      <div style={{ display: 'inline-block' }}>
         <div className="voteText">Votes:</div>
         <div className="voteText">{props.voteCount > 0 ? "+" + props.voteCount : 0}</div>
       </div>
@@ -48,8 +48,8 @@ const Note = (props) => {
     <div className="card noteCard">
       <div className="createdAt">Noted on: {formatDate(props.note.createdAt)}</div>
       <div>
-        <div style={{display:'inline-block', width: '70%'}}>{props.note.noteText}</div>
-        <VotingBox noteId={props.note.id} voteCount={props.note.voteCount} handleVote={props.handleVote}/>
+        <div onClick={() => props.handleNoteClick(props.note.id)} style={{ display: 'inline-block', width: '70%' }}>{props.note.noteText}</div>
+        <VotingBox noteId={props.note.id} voteCount={props.note.voteCount} handleVote={props.handleVote} />
       </div>
     </div>
   )
@@ -58,7 +58,7 @@ const Note = (props) => {
 const ScrollBox = (props) => {
   return (
     <div className="card scrollBox">
-      {props.notes.map((note) => (<Note key={note.id} handleVote={props.handleVote} note={note} />))}
+      {props.notes.map((note) => (<Note key={note.id} handleNoteClick={props.handleNoteClick} handleVote={props.handleVote} note={note} />))}
     </div>
   )
 }
@@ -66,9 +66,24 @@ const ScrollBox = (props) => {
 const SortSelection = (props) => {
   return (
     <div className="sortSelection">
-      <div className={props.sortedBy === 'date' ? "inputContent" : "inputContent inactiveSort" } onClick={() => props.updateSortedBy("date")}>Date</div>
+      <div className={props.sortedBy === 'date' ? "inputContent" : "inputContent inactiveSort"} onClick={() => props.updateSortedBy("date")}>Date</div>
       <div className="inputContent">|</div>
-      <div className={props.sortedBy === 'vote' ? "inputContent" : "inputContent inactiveSort" } onClick={() => props.updateSortedBy("vote")}>Vote</div>
+      <div className={props.sortedBy === 'vote' ? "inputContent" : "inputContent inactiveSort"} onClick={() => props.updateSortedBy("vote")}>Vote</div>
+    </div>
+  )
+}
+
+const HomeView = (props) => {
+
+  console.log(props)
+  return (
+    <div className="card outerCard">
+      <div className="header">
+        <h1>Anonymous Notes</h1>
+      </div>
+      <InputNote inputText={props.inputText} handleInputTextChange={props.handleInputTextChange} addButtonClicked={props.addButtonClicked} />
+      {props.notes.length > 0 && <SortSelection sortedBy={props.sortedBy} updateSortedBy={props.updateSortedBy} />}
+      {props.notes.length > 0 && <ScrollBox handleNoteClick={props.handleNoteClick} handleVote={props.handleVote} notes={props.sortedNotes} />}
     </div>
   )
 }
@@ -122,11 +137,11 @@ class App extends Component {
     if (this.state.sortedBy === 'date')
       return sortedNotes.sort(function (a, b) { return b.createdAt - a.createdAt })
     else
-    return sortedNotes.sort(function (a, b) { return b.voteCount - a.voteCount }) 
+      return sortedNotes.sort(function (a, b) { return b.voteCount - a.voteCount })
   }
 
   updateSortedBy(dateOrVote) {
-    this.setState({sortedBy: dateOrVote})
+    this.setState({ sortedBy: dateOrVote })
   }
 
   handleVote(noteId) {
@@ -138,18 +153,15 @@ class App extends Component {
     }, () => { })
   }
 
+  handleNoteClick(noteId) {
+    console.log("clicked note: " + noteId)
+  }
+
   render() {
     return (
       <Router>
         <div className="App">
-          <div className="card outerCard">
-            <div className="header">
-              <h1>Anonymous Notes</h1>
-            </div>
-            <InputNote inputText={this.state.inputText} handleInputTextChange={this.handleInputTextChange} addButtonClicked={this.addButtonClicked} />
-            {this.state.notes.length > 0 && <SortSelection sortedBy={this.state.sortedBy} updateSortedBy={this.updateSortedBy} />}
-            {this.state.notes.length > 0 && <ScrollBox handleVote={this.handleVote} notes={this.sortedNotes()} />}
-          </div>
+          <Route exact path="/" render={() => <HomeView inputText={this.state.inputText} notes={this.state.notes} sortedBy={this.state.sortedBy} handleInputTextChange={this.handleInputTextChange} addButtonClicked={this.addButtonClicked} updateSortedBy={this.updateSortedBy} handleNoteClick={this.handleNoteClick} handleVote={this.handleVote} sortedNotes={this.sortedNotes()}/>} />
         </div>
       </Router>
     );
