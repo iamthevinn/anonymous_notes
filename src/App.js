@@ -13,7 +13,7 @@ const InputNote = (props) => {
         <input style={{margin: '0px'}} onChange={props.handleInputTextChange} value={props.inputText} type="text"></input>
       </div>
       <div className="inputContent inputButtonContainer">
-        <button style={{margin: '0px'}} onClick={props.addButtonClicked} className="inputButton">Add Note</button>
+        <button style={{margin: '0px'}} disabled={props.inputText.length < 3 ? true : false} onClick={props.addButtonClicked} className="inputButton">Add Note</button>
       </div>
     </div>
   )
