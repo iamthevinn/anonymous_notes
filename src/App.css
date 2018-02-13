@@ -42,3 +42,8 @@
 .noteCard {
   margin-bottom: 5px;
 }
+
+.createdAt {
+  text-align: right;
+  padding-bottom: 10px;
+}
