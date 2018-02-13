@@ -30,7 +30,7 @@ const VotingBox = (props) => {
     <div className="votingBox">
       <div style={{display:'inline-block'}}>
         <div className="voteText">Votes:</div>
-        <div className="voteText">+3</div>
+        <div className="voteText">{props.voteCount > 0 ? "+" + props.voteCount : 0}</div>
       </div>
       <button className="voteButton" onClick={() => props.handleVote(props.noteId)} >Upvote!</button>
     </div>
@@ -49,7 +49,7 @@ const Note = (props) => {
       <div className="createdAt">Noted on: {formatDate(props.note.createdAt)}</div>
       <div>
         <div style={{display:'inline-block', width: '70%'}} className="noteText">{props.note.noteText}</div>
-        <VotingBox noteId={props.note.id} handleVote={props.handleVote}/>
+        <VotingBox noteId={props.note.id} voteCount={props.note.voteCount} handleVote={props.handleVote}/>
       </div>
     </div>
   )
