@@ -32,7 +32,7 @@ const VotingBox = (props) => {
         <div className="voteText">Votes:</div>
         <div className="voteText">+3</div>
       </div>
-      <button className="voteButton">Upvote!</button>
+      <button className="voteButton" onClick={() => props.handleVote(props.noteId)} >Upvote!</button>
     </div>
   )
 }
@@ -49,7 +49,7 @@ const Note = (props) => {
       <div className="createdAt">Noted on: {formatDate(props.note.createdAt)}</div>
       <div>
         <div style={{display:'inline-block', width: '70%'}} className="noteText">{props.note.noteText}</div>
-        <VotingBox />
+        <VotingBox noteId={props.note.id} handleVote={props.handleVote}/>
       </div>
     </div>
   )
@@ -58,7 +58,7 @@ const Note = (props) => {
 const ScrollBox = (props) => {
   return (
     <div className="card scrollBox">
-      {props.notes.map((note) => (<Note key={note.id} note={note} />))}
+      {props.notes.map((note) => (<Note key={note.id} handleVote={props.handleVote} note={note} />))}
     </div>
   )
 }
@@ -87,6 +87,7 @@ class App extends Component {
     this.addNote = this.addNote.bind(this)
     this.sortedNotes = this.sortedNotes.bind(this)
     this.updateSortedBy = this.updateSortedBy.bind(this)
+    this.handleVote = this.handleVote.bind(this)
   }
 
   componentDidMount() {
@@ -113,7 +114,7 @@ class App extends Component {
   }
 
   addButtonClicked() {
-    this.addNote({ noteText: this.state.inputText })
+    this.addNote({ noteText: this.state.inputText, voteCount: 0 })
   }
 
   sortedNotes() {
@@ -125,6 +126,17 @@ class App extends Component {
     this.setState({sortedBy: dateOrVote})
   }
 
+  handleVote(noteId) {
+    let tempNote = this.state.notes.find((note) => noteId === note.id)
+    tempNote.voteCount++
+    const promise = axios.put('http://5a831a6898bd81001246c8e5.mockapi.io/notes/' + noteId, tempNote);
+    promise.then(({ data: note }) => {
+      this.loadNotes()
+    }, () => { })
+  }
+
+
+
   render() {
     return (
       <Router>
@@ -135,7 +147,7 @@ class App extends Component {
             </div>
             <InputNote inputText={this.state.inputText} handleInputTextChange={this.handleInputTextChange} addButtonClicked={this.addButtonClicked} />
             {this.state.notes.length > 0 && <SortSelection sortedBy={this.state.sortedBy} updateSortedBy={this.updateSortedBy} />}
-            {this.state.notes.length > 0 && <ScrollBox notes={this.sortedNotes()} />}
+            {this.state.notes.length > 0 && <ScrollBox handleVote={this.handleVote} notes={this.sortedNotes()} />}
           </div>
         </div>
       </Router>
