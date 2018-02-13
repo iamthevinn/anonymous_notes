@@ -48,7 +48,7 @@ const Note = (props) => {
     <div className="card noteCard">
       <div className="createdAt">Noted on: {formatDate(props.note.createdAt)}</div>
       <div>
-        <div onClick={() => props.handleNoteClick(props.note.id)} style={{ display: 'inline-block', width: '70%' }}>{props.note.noteText}</div>
+        <div onClick={() => props.handleNoteClick(props.note.id, props.match)} style={{ display: 'inline-block', width: '70%' }}>{props.note.noteText}</div>
         <VotingBox noteId={props.note.id} voteCount={props.note.voteCount} handleVote={props.handleVote} />
       </div>
     </div>
@@ -58,7 +58,7 @@ const Note = (props) => {
 const ScrollBox = (props) => {
   return (
     <div className="card scrollBox">
-      {props.notes.map((note) => (<Note key={note.id} handleNoteClick={props.handleNoteClick} handleVote={props.handleVote} note={note} />))}
+      {props.notes.map((note) => (<Note key={note.id} match={props.match} handleNoteClick={props.handleNoteClick} handleVote={props.handleVote} note={note} />))}
     </div>
   )
 }
@@ -74,8 +74,6 @@ const SortSelection = (props) => {
 }
 
 const HomeView = (props) => {
-
-  console.log(props)
   return (
     <div className="card outerCard">
       <div className="header">
@@ -83,7 +81,15 @@ const HomeView = (props) => {
       </div>
       <InputNote inputText={props.inputText} handleInputTextChange={props.handleInputTextChange} addButtonClicked={props.addButtonClicked} />
       {props.notes.length > 0 && <SortSelection sortedBy={props.sortedBy} updateSortedBy={props.updateSortedBy} />}
-      {props.notes.length > 0 && <ScrollBox handleNoteClick={props.handleNoteClick} handleVote={props.handleVote} notes={props.sortedNotes} />}
+      {props.notes.length > 0 && <ScrollBox match={props.match} handleNoteClick={props.handleNoteClick} handleVote={props.handleVote} notes={props.sortedNotes} />}
+    </div>
+  )
+}
+
+const NoteView = (props) => {
+  return (
+    <div className="noteView">
+      <h1>NoteView</h1>
     </div>
   )
 }
@@ -153,15 +159,16 @@ class App extends Component {
     }, () => { })
   }
 
-  handleNoteClick(noteId) {
-    console.log("clicked note: " + noteId)
+  handleNoteClick(noteId, match) {
+    match.history.push("/" + noteId)
   }
 
   render() {
     return (
       <Router>
         <div className="App">
-          <Route exact path="/" render={() => <HomeView inputText={this.state.inputText} notes={this.state.notes} sortedBy={this.state.sortedBy} handleInputTextChange={this.handleInputTextChange} addButtonClicked={this.addButtonClicked} updateSortedBy={this.updateSortedBy} handleNoteClick={this.handleNoteClick} handleVote={this.handleVote} sortedNotes={this.sortedNotes()}/>} />
+          <Route exact path="/" render={(match) => <HomeView match={match} inputText={this.state.inputText} notes={this.state.notes} sortedBy={this.state.sortedBy} handleInputTextChange={this.handleInputTextChange} addButtonClicked={this.addButtonClicked} updateSortedBy={this.updateSortedBy} handleNoteClick={this.handleNoteClick} handleVote={this.handleVote} sortedNotes={this.sortedNotes()}/>} />
+          <Route path="/:id" render={() => <NoteView />} />
         </div>
       </Router>
     );
