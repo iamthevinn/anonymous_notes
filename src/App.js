@@ -3,8 +3,6 @@ import './App.css';
 import './ui-toolkit/css/nm-cx/main.css'
 import axios from 'axios'
 
-//
-
 const InputNote = (props) => {
   return (
     <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}} className="card">
@@ -22,9 +20,15 @@ const InputNote = (props) => {
 }
 
 const Note = (props) => {
+
+  function formatDate(timeSinceEpoch) {
+    const date = new Date(timeSinceEpoch * 1000)
+    return date.toLocaleString();
+  }
+
   return (
     <div className="card noteCard">
-      <div className="createdAt">Noted on: {props.note.createdAt}</div>
+      <div className="createdAt">Noted on: {formatDate(props.note.createdAt)}</div>
       <div className="noteText">{props.note.noteText}</div>
     </div>
   )
@@ -33,7 +37,7 @@ const Note = (props) => {
 const ScrollBox = (props) => {
   return (
     <div className="card scrollBox">
-      {props.notes.map((note) => (<Note note={note} />))}
+      {props.notes.map((note) => (<Note key={note.id} note={note} />))}
     </div>
   )
 }
@@ -49,6 +53,7 @@ class App extends Component {
     this.addButtonClicked = this.addButtonClicked.bind(this)
     this.loadNotes = this.loadNotes.bind(this)
     this.addNote = this.addNote.bind(this)
+    this.sortedNotes = this.sortedNotes.bind(this)
   }
 
   componentDidMount() {
@@ -78,6 +83,11 @@ class App extends Component {
     this.addNote({noteText: this.state.inputText})
   }
 
+  sortedNotes() {
+    let sortedNotes = this.state.notes.slice();
+    return sortedNotes.sort(function(a, b){ return b.createdAt - a.createdAt })
+  }
+
   render() {
     return (
       <div className="App">
@@ -86,7 +96,7 @@ class App extends Component {
             <h1>Anonymous Notes</h1>
           </div>
           <InputNote inputText={this.state.inputText} handleInputTextChange={this.handleInputTextChange} addButtonClicked={this.addButtonClicked} />
-          { this.state.notes.length > 0 && <ScrollBox notes={this.state.notes}/> }
+          { this.state.notes.length > 0 && <ScrollBox notes={this.sortedNotes()}/> }
         </div>
       </div>
     );
